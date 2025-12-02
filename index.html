@@ -1,32 +1,198 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Test Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arcadia — Play • Discover • Connect</title>
+  <meta name="description" content="Arcadia: discover curated games, read news, and join community events." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 40px;
+    :root{
+      --bg:#07080b; --panel:#0f1720; --muted:#9aa4b2; --accent1:#7b61ff; --accent2:#00d4ff; --glass:rgba(255,255,255,0.03);
+      --maxw:1200px; --radius:14px;
+      color-scheme: dark;
     }
-    .card {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 10%, rgba(123,97,255,0.08), transparent), linear-gradient(180deg,#05060a 0%,var(--bg) 60%);font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#eaf3ff}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#041226;font-size:22px;box-shadow:0 8px 30px rgba(11,12,20,0.6)}
+    .brand h1{margin:0;font-size:20px;letter-spacing:0.2px}
+    nav{display:flex;gap:12px}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:12px;font-weight:600}
+    nav a.cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#021425}
+
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:22px;margin-top:22px;align-items:start}
+    .hero-panel{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:28px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(6,8,15,0.6)}
+    .eyebrow{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:1px}
+    .hero-panel h2{margin:10px 0 6px;font-size:34px}
+    .hero-panel p{color:var(--muted);margin:10px 0 18px;font-size:15px}
+    .actions{display:flex;gap:12px}
+    .btn{padding:12px 16px;border-radius:12px;border:0;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#012;}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    .right{display:flex;flex-direction:column;gap:12px}
+    .card-compact{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:14px;border-radius:12px}
+    .stats{display:flex;gap:12px}
+    .stat{flex:1;text-align:center}
+    .stat h3{margin:4px 0 0}
+    .stat p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    .section-title{margin-top:24px;font-size:18px}
+    .games{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .game{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,15,0.6);cursor:pointer;transition:transform .16s ease, box-shadow .16s ease}
+    .game:hover{transform:translateY(-8px);box-shadow:0 18px 50px rgba(2,6,15,0.7)}
+    .game-visual{height:160px;background-size:cover;background-position:center}
+    .meta{padding:12px}
+    .meta h4{margin:0 0 6px}
+    .meta p{margin:0;color:var(--muted);font-size:14px}
+
+    .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);color:var(--muted)}
+
+    footer{margin-top:28px;padding:18px;border-top:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:space-between;color:var(--muted)}
+
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(1,2,6,0.6);opacity:0;pointer-events:none;transition:opacity .18s ease}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal-dialog{width:min(880px,94%);background:linear-gradient(180deg,#081024, #07101a);padding:18px;border-radius:12px;box-shadow:0 30px 80px rgba(2,6,20,0.8)}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .close{background:transparent;border:0;color:var(--muted);font-weight:700;cursor:pointer}
+
+    @media (max-width:1000px){.hero{grid-template-columns:1fr 340px}.games{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:700px){.wrap{padding:16px}.hero{grid-template-columns:1fr}.games{grid-template-columns:1fr}.logo{width:48px;height:48px}}
+
+    a:focus, button:focus, input:focus{outline:2px solid rgba(125,95,255,0.14);outline-offset:2px}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Arcadia</h1>
+          <div style="font-size:13px;color:var(--muted)">Play • Discover • Connect</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#features">Browse</a>
+        <a href="#community">Community</a>
+        <a href="#events">Events</a>
+        <a class="cta" href="#play">Play Now</a>
+      </nav>
+    </header>
 
-  <h1>Website is Working ✔️</h1>
-  <p>If you can read this, your GitHub Pages is working.</p>
+    <main>
+      <section class="hero">
+        <div class="hero-panel">
+          <div class="eyebrow">Featured</div>
+          <h2>Games worth playing — handpicked every week</h2>
+          <p>Explore curated picks, community events, and editor stories. Join a vibrant player base and discover your next favorite title.</p>
+          <div class="actions">
+            <button class="btn primary" id="exploreBtn">Explore Games</button>
+            <button class="btn ghost" id="subscribeBtn">Subscribe</button>
+          </div>
 
-  <div class="card">
-    <h2>Next Step:</h2>
-    <p>We will add the real gaming website design here.</p>
+          <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+            <div style="display:flex;gap:10px;align-items:center">
+              <img src="https://images.unsplash.com/photo-1602391832853-3ac8d2d5c5cf?q=80&w=640&auto=format&fit=crop&ixlib=rb-4.0.3&s=000" alt="editor pick" style="width:62px;height:62px;border-radius:10px;object-fit:cover;box-shadow:0 6px 18px rgba(3,6,12,0.5)">
+              <div>
+                <div style="font-weight:700">Editor's Choice</div>
+                <div style="font-size:13px;color:var(--muted)">Echoes of Frontier</div>
+              </div>
+            </div>
+            <div style="margin-left:auto;color:var(--muted);font-size:13px">New • Oct 2025</div>
+          </div>
+        </div>
+
+        <aside class="right">
+          <div class="card-compact">
+            <div class="stats">
+              <div class="stat"><div style="font-size:18px;font-weight:800">120k+</div><p>Monthly players</p></div>
+              <div class="stat"><div style="font-size:18px;font-weight:800">450+</div><p>Games curated</p></div>
+              <div class="stat"><div style="font-size:18px;font-weight:800">25</div><p>Upcoming events</p></div>
+            </div>
+          </div>
+
+          <div class="card-compact">
+            <div style="font-weight:700;margin-bottom:8px">Latest News</div>
+            <div style="color:var(--muted);font-size:14px">Arcadia launches cross-play beta — sign up for the first wave.</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="features">
+        <h3 class="section-title">Featured Games</h3>
+        <div class="games" id="gamesGrid" aria-live="polite"></div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div>© <span id="year"></span> Arcadia</div>
+      <div style="color:var(--muted)">Built with love • HTML, CSS & JavaScript</div>
+    </footer>
   </div>
 
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <strong id="modalTitle">Game</strong>
+        <button class="close" id="closeModal" aria-label="Close">✕</button>
+      </div>
+      <div id="modalContent" style="margin-top:10px;color:var(--muted)">Details</div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const games = [
+      {title:'Echoes of Frontier', desc:'Open-world western adventure with dynamic storylines and moral choices.', img:'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['Open-world','Single-player','Story'], players:'35k'},
+      {title:'Neon Racers', desc:'High-speed neon arcade racing with thrilling drift mechanics and online leaderboards.', img:'https://images.unsplash.com/photo-1520975910604-0f46a4d5d75b?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['Racing','Multiplayer'], players:'21k'},
+      {title:'Starlight Colony', desc:'Colony building and survival on a frozen exoplanet with cooperative play.', img:'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['Strategy','Co-op'], players:'14k'},
+      {title:'Shadow Circuit', desc:'Cyberpunk stealth-action with rich upgrade trees and emergent combat.', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['Action','Stealth'], players:'9k'},
+      {title:'Mythweaver', desc:'Turn-based tactical RPG with deep narrative and deck-building elements.', img:'https://images.unsplash.com/photo-1541409181-2c68e8cf184e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['RPG','Tactics'], players:'8k'},
+      {title:'Realm of Gardens', desc:'Relaxing farming sim with co-op and seasonal events.', img:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=000', tags:['Simulation','Casual'], players:'6k'}
+    ];
+
+    const grid = document.getElementById('gamesGrid');
+    function render(){
+      grid.innerHTML = '';
+      games.forEach((g, idx)=>{
+        const el = document.createElement('article'); el.className='game'; el.tabIndex=0; el.setAttribute('role','button');
+        el.innerHTML = `
+          <div class="game-visual" style="background-image:url('${g.img}')" aria-hidden="true"></div>
+          <div class="meta">
+            <h4>${g.title}</h4>
+            <p>${g.desc}</p>
+            <div class="tags">${g.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<span class="tag">Players: ${g.players}</span></div>
+          </div>`;
+        el.addEventListener('click', ()=> openModal(g));
+        el.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') openModal(g); });
+        grid.appendChild(el);
+      });
+    }
+
+    function openModal(g){
+      document.getElementById('modalTitle').textContent = g.title;
+      document.getElementById('modalContent').innerHTML = `<p style="margin:0 0 10px">${g.desc}</p><p style="color:var(--muted)">Tags: ${g.tags.join(', ')}</p>`;
+      const modal = document.getElementById('modal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+      document.getElementById('closeModal').focus();
+    }
+    function closeModal(){ const modal=document.getElementById('modal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target===document.getElementById('modal')) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    document.getElementById('exploreBtn').addEventListener('click', ()=>{ window.scrollTo({top: document.getElementById('features').offsetTop - 24, behavior:'smooth'}) });
+    document.getElementById('subscribeBtn').addEventListener('click', ()=> alert('Thanks — subscribe feature coming soon!'));
+
+    render();
+  </script>
 </body>
 </html>
